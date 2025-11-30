@@ -2,21 +2,21 @@
 CC = gcc
 CFLAGS = -Wall -g
 TARGET = myshell
-OBJS = myshell.o cmd_file.o cmd_info.o
+OBJS = main.o execute.o commands.o
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-myshell.o: myshell.c myshell.h
-	$(CC) $(CFLAGS) -c myshell.c
+main.o: main.c myshell.h
+	$(CC) $(CFLAGS) -c main.c
 
-cmd_file.o: cmd_file.c myshell.h
-	$(CC) $(CFLAGS) -c cmd_file.c
+execute.o: execute.c myshell.h
+	$(CC) $(CFLAGS) -c execute.c
 
-cmd_info.o: cmd_info.c myshell.h
-	$(CC) $(CFLAGS) -c cmd_info.c
+commands.o: commands.c myshell.h
+	$(CC) $(CFLAGS) -c commands.c
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f *.o $(TARGET)
