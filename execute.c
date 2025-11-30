@@ -118,8 +118,7 @@ void execute_command_line(char *input) {
     char *argv[MAX_ARG];
     char *argv_pipe[MAX_ARG];
     int is_bg = 0;
-    int has_pipe = 0;
-    
+
     // 1. 파이프 확인 및 분리
     char *pipe_pos = strchr(input, '|');
     if (pipe_pos != NULL) {

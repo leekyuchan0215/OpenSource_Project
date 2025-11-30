@@ -35,18 +35,18 @@ extern int job_count;
 
 // --- 함수 프로토타입 선언 ---
 
-// main.c
+// main.c : 이규찬 구현
 void add_job(pid_t pid, char *command);
 void print_prompt();
 int parse_input(char *cmd, char **argv);
 void handle_signal(int signo);
 
-// execute.c
+// execute.c : 이지민 구현
 void execute_command_line(char *input);
 int handle_redirection(char **argv);
 void execute_pipe(char **argv1, char **argv2);
 
-// commands.c
+// commands.c : 임진호 구현
 int is_builtin(char *cmd);
 void do_builtin(char **argv);
 void cmd_ls(char **argv);

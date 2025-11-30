@@ -1,4 +1,12 @@
-/* main.c - 팀원 A 담당 (메인 루프, 시그널, 파싱) */
+/*
+ * main.c
+ *
+ * [역할]
+ * 메인 루프, 시그널, 파싱
+ *
+ * [작성자]
+ * 20212977 이규찬
+ */
 #include "myshell.h"
 
 // 전역 변수 정의
@@ -131,13 +139,13 @@ int main() {
             break;
         }
         
-        // jobs 명령 처리 (여기서 처리)
+        // jobs 명령 처리
         if (strcmp(cmd_buf, "jobs") == 0) {
             print_jobs();
             continue;
         }
 
-        // 3. 실행 로직 위임 (Team B 담당)
+        // 3. 실행 로직 위임 
         execute_command_line(cmd_buf);
     }
 
