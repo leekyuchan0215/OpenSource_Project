@@ -118,11 +118,11 @@ void execute_command_line(char *input) {
     char *argv[MAX_ARG];
     char *argv_pipe[MAX_ARG];
     int is_bg = 0;
-
+    
     // 1. 파이프 확인 및 분리
     char *pipe_pos = strchr(input, '|');
     if (pipe_pos != NULL) {
-        *pipe_pos = '\0'; // 파이프 기호를 NULL로 변경하여 문자열 분리
+        *pipe_pos = '\0';
         char *cmd2 = pipe_pos + 1;
         
         parse_input(input, argv);
@@ -136,15 +136,34 @@ void execute_command_line(char *input) {
     int argc = parse_input(input, argv);
     if (argc == 0) return;
 
-    // 3. 백그라운드 확인
+    // 3. 백그라운드(&) 확인
     if (strcmp(argv[argc-1], "&") == 0) {
         is_bg = 1;
-        argv[argc-1] = NULL; // & 기호 제거
+        argv[argc-1] = NULL;
     }
 
     // 4. 빌트인 명령어 확인 및 실행
     if (is_builtin(argv[0])) {
+        // [수정된 부분] 빌트인 명령어도 리다이렉션 처리 (화면 복구 기능 추가)
+        int original_stdin = dup(STDIN_FILENO);
+        int original_stdout = dup(STDOUT_FILENO);
+
+        // 리다이렉션 처리 (argv에서 >, < 기호 제거됨)
+        if (handle_redirection(argv) == -1) {
+            // 에러 나면 복구하고 종료
+            dup2(original_stdin, STDIN_FILENO);
+            dup2(original_stdout, STDOUT_FILENO);
+            return;
+        }
+
+        // 명령어 실행
         do_builtin(argv);
+
+        // [중요] 표준 입출력을 원래대로(화면/키보드) 복구
+        dup2(original_stdin, STDIN_FILENO);
+        dup2(original_stdout, STDOUT_FILENO);
+        close(original_stdin);
+        close(original_stdout);
         return;
     }
 
@@ -157,25 +176,25 @@ void execute_command_line(char *input) {
     }
 
     if (pid == 0) { // 자식 프로세스
-        // 백그라운드 프로세스는 시그널 무시하지 않도록 설정
-        signal(SIGINT, SIG_DFL);
-        signal(SIGQUIT, SIG_DFL);
+        if (!is_bg) {
+            signal(SIGINT, SIG_DFL);
+            signal(SIGQUIT, SIG_DFL);
+        } else {
+            signal(SIGINT, SIG_IGN);
+            signal(SIGQUIT, SIG_IGN);
+        }
 
         // 리다이렉션 처리
         handle_redirection(argv);
 
-        // 외부 명령어 실행
         execvp(argv[0], argv);
         
-        // execvp 실패 시
         fprintf(stderr, "%s: command not found\n", argv[0]);
         exit(1);
     } else { // 부모 프로세스
         if (is_bg) {
-            // 백그라운드 실행: 기다리지 않고 job 추가
             add_job(pid, input);
         } else {
-            // 포그라운드 실행: 종료 대기
             waitpid(pid, NULL, 0);
         }
     }
