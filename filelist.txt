@@ -1,0 +1,12 @@
+-rw-r--r--	0	filelist.txt
+-rw-r--r--	1418	myshell.h
+-rw-r--r--	4134	main.c
+-rwxr-xr-x	45688	myshell
+-rw-r--r--	18384	main.o
+-rw-r--r--	24432	commands.o
+-rw-r--r--	14008	execute.o
+-rw-r--r--	20	README.md
+-rw-r--r--	7430	commands.c
+-rw-r--r--	1071	LICENSE
+-rw-r--r--	5449	execute.c
+-rw-r--r--	372	Makefile
