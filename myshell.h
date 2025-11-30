@@ -46,7 +46,7 @@ void execute_command_line(char *input);
 int handle_redirection(char **argv);
 void execute_pipe(char **argv1, char **argv2);
 
-// commands.c (팀원 C - 본인)
+// commands.c (팀원 C - 임진호)
 int is_builtin(char *cmd);
 void do_builtin(char **argv);
 void cmd_ls(char **argv);
