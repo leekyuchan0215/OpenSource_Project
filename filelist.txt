@@ -1,10 +1,10 @@
 -rw-r--r--	0	filelist.txt
--rw-r--r--	1418	myshell.h
+-rw-r--r--	1477	myshell.h
 -rw-r--r--	4134	main.c
--rwxr-xr-x	45688	myshell
+-rwxr-xr-x	45736	myshell
 -rw-r--r--	18384	main.o
 -rw-r--r--	24432	commands.o
--rw-r--r--	14008	execute.o
+-rw-r--r--	14088	execute.o
 -rw-r--r--	20	README.md
 -rw-r--r--	7430	commands.c
 -rw-r--r--	1071	LICENSE

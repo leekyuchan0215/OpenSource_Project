@@ -124,8 +124,15 @@ int main() {
         print_prompt();
 
         if (fgets(cmd_buf, MAX_CMD_BUF, stdin) == NULL) {
+            if (ferror(stdin)) {
+                clearerr(stdin); // 에러 상태를 초기화하고
+                printf("\n");
+                continue;        // 루프의 처음으로 돌아가서 다시 입력받음
+            }
+            
+            // 진짜 종료 신호(Ctrl-D)가 들어온 경우
             printf("\nExiting shell...\n");
-            break; 
+            break;
         }
 
         // 개행 문자 제거
